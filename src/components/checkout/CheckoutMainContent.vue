@@ -10,9 +10,6 @@
       heading="Billing"
       ref="myForm2"
     />
-    <q-btn draggable dark-percentage="90" @click="handleFormSubmit"
-      >Complete Order</q-btn
-    >
   </main>
 </template>
 
