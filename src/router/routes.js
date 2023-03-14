@@ -1,11 +1,11 @@
 const routes = [
   {
-    path: "/",
+    path: "/upsell",
     component: () => import("layouts/MainLayout.vue"),
     children: [{ path: "", component: () => import("pages/UpsellPage.vue") }],
   },
   {
-    path: "/checkout",
+    path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [{ path: "", component: () => import("pages/CheckoutPage.vue") }],
   },
