@@ -21,7 +21,7 @@
 <script>
 import { defineComponent } from "vue";
 import "@fontsource/poppins";
-import shopPay from "../../assets/shoppay.svg";
+import shopPay from "../../assets/shopPay.svg";
 import payPal from "../../assets/paypal2.svg";
 import gPay from "../../assets/gpay.svg";
 import CheckoutWarranty from "./CheckoutWarranty.vue";
