@@ -1,38 +1,51 @@
 <template>
-  <q-card>
+  <q-card class="flex column q-gutter-md">
     <q-card-section class="reserve-text">
       <span>Your cart is reserved for 10:00 minutes</span>
     </q-card-section>
     <q-card-section class="express" v-if="paymentMethods.length">
       <span>Express Checkout</span>
       <div>
-        <q-btn v-for="item in paymentMethods" :key="item.name">
-          {{ item.name }}
-        </q-btn>
+        <img
+          v-for="item in paymentMethods"
+          :key="item.name"
+          :src="item.src"
+          alt=""
+        />
       </div>
     </q-card-section>
+    <checkout-warranty />
   </q-card>
 </template>
 
 <script>
 import { defineComponent } from "vue";
+import "@fontsource/poppins";
+import shopPay from "../../assets/shoppay.svg";
+import payPal from "../../assets/paypal2.svg";
+import gPay from "../../assets/gpay.svg";
+import CheckoutWarranty from "./CheckoutWarranty.vue";
 
 const paymentMethods = [
   {
+    id: "1",
     name: "ShopPay",
-    icon: "1",
+    src: shopPay,
   },
   {
+    id: "2",
     name: "PayPal",
-    icon: "2",
+    src: payPal,
   },
   {
+    id: "3",
     name: "GPay",
-    icon: "3",
+    src: gPay,
   },
 ];
 
 export default defineComponent({
+  components: { CheckoutWarranty },
   name: "CheckoutReservation",
   setup() {
     return {
@@ -46,10 +59,11 @@ export default defineComponent({
 .q-card {
   box-shadow: none;
   > .reserve-text {
-    padding: 30px !important;
+    padding: 15px 30px;
     background-color: #ebecf3;
     border-radius: 16px;
     > span {
+      font-family: Poppins;
       font-size: 16px;
     }
   }
@@ -62,29 +76,15 @@ export default defineComponent({
     border: 1px solid #d6d8ee;
     border-radius: 16px;
     > span {
+      font-family: Poppins;
+      font-weight: 600;
       font-size: 20px;
     }
     > div {
       display: flex;
       gap: 20px;
-      button {
-        max-width: 150px;
-        max-height: 50px;
-      }
-      > :first-child {
-        background-color: rgba(90, 49, 244, 0.1);
-        border: 1px solid rgba(90, 49, 244, 0.6);
-        border-radius: 16px;
-      }
-      > :nth-child(2) {
-        background-color: rgba(17, 57, 132, 0.1);
-        border: 1px solid rgba(17, 57, 132, 0.6);
-        border-radius: 16px;
-      }
-      > :last-child {
-        background-color: rgba(234, 64, 50, 0.1);
-        border: 1px solid rgba(234, 64, 50, 0.6);
-        border-radius: 16px;
+      img {
+        width: 115px;
       }
     }
   }

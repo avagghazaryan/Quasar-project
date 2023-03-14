@@ -16,6 +16,7 @@
   "dependencies": {
     "@fontsource/poppins": "^4.5.10",
     "@quasar/extras": "^1.0.0",
+    "bootstrap-icons": "^1.10.3",
     "core-js": "^3.6.5",
     "quasar": "^2.6.0",
     "vue": "^3.0.0",

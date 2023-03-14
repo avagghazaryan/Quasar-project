@@ -1,6 +1,9 @@
 <template>
-  <q-form @submit="handleSubmit" ref="formRef">
-    <div class="flex column" v-if="heading === 'Shipping'">
+  <q-card>
+    <q-card-section
+      class="flex column q-gutter-md"
+      v-if="heading === 'Shipping'"
+    >
       <span class="contact-info">Contact Information</span>
       <q-input
         v-model="checkoutOptions.email"
@@ -8,40 +11,58 @@
         outlined
         label="Email Address"
         lazy-rules
-        :rules="[(val) => (val && val.length > 0) || 'Please type email']"
-      />
+        :rules="[
+          (val) =>
+            (val && val.length > 0 && isEmail(val)) ||
+            'Enter a valid email address',
+        ]"
+      >
+        <template v-slot:label>
+          <q-icon name="fa-solid fa-envelope" />
+          <span> Email Address</span>
+        </template>
+      </q-input>
       <q-input
         v-model="checkoutOptions.phone"
         rounded
         outlined
         label="Phone Number"
-        lazy-rules
-        :rules="[(val) => (val && val.length > 0) || 'Please type email']"
-      />
+      >
+        <template v-slot:label>
+          <div>
+            <q-icon name="fa-solid fa-phone-volume" />
+            <span> Phone Number</span>
+          </div>
+        </template></q-input
+      >
       <q-checkbox
+        class="sign-up"
         v-model="checkoutOptions.useOffers"
         rounded
         outlined
         label="Sign up for exclusive offers and news"
       />
-    </div>
-    <div
-      v-if="(heading === 'Billing' && !isSameAddress) || heading === 'Shipping'"
+    </q-card-section>
+    <q-card-section
+      v-if="!isSameAddress || heading === 'Shipping'"
+      class="flex column q-gutter-md"
     >
+      <span v-if="heading" class="shipping-adress-text">
+        {{ heading }} Address</span
+      >
       <div class="flex column q-gutter-md">
-        <span class="text-h6">{{ heading }} Address</span>
         <q-select
           rounded
           outlined
           :options="countryOpts"
           v-model="checkoutOptions.country"
-          lazy-rules
-          :rules="[(val) => (val && val.length > 0) || 'Please type email']"
+          label=""
         >
-          <template v-slot:append>
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg" />
-            </q-avatar>
+          <template v-slot:label>
+            <div>
+              <q-icon name="fa-solid fa-location-dot" />
+              <span>Select a Country</span>
+            </div>
           </template>
         </q-select>
         <div class="flex justify-stretch">
@@ -53,9 +74,18 @@
             class="col q-mr-md"
             lazy-rules
             :rules="[
-              (val) => (val && val.length > 0) || 'Please type your first name',
+              (val) =>
+                (val && val.length > 0 && isValidName(val)) ||
+                'Enter a first name',
             ]"
-          />
+          >
+            <template v-slot:label>
+              <div>
+                <q-icon name="fa-solid fa-user" />
+                <span> First Name</span>
+              </div>
+            </template></q-input
+          >
           <q-input
             v-model="checkoutOptions.lastName"
             rounded
@@ -64,57 +94,66 @@
             class="col inline"
             lazy-rules
             :rules="[
-              (val) => (val && val.length > 0) || 'Please type your last name',
+              (val) =>
+                (val && val.length > 0 && isValidName(val)) ||
+                'Enter a last name',
             ]"
-          />
+          >
+            <template v-slot:label>
+              <div>
+                <q-icon name="fa-solid fa-user" />
+                <span> Last Name</span>
+              </div>
+            </template>
+          </q-input>
         </div>
         <q-input
           v-model="checkoutOptions.address"
           rounded
           outlined
           label="Address"
-          lazy-rules
-          :rules="[(val) => (val && val.length > 0) || 'Please select address']"
-        />
+        >
+          <template v-slot:label>
+            <div>
+              <q-icon name="fa-solid fa-envelope-open" />
+              <span> Address</span>
+            </div>
+          </template></q-input
+        >
         <q-input
           v-model="checkoutOptions.apartment"
           rounded
           outlined
           label="Aparment, suit, etc (Optional)"
-        />
+        >
+          <template v-slot:label>
+            <div>
+              <q-icon name="fa-solid fa-building" />
+              <span> Aparment, suit, etc (Optional)</span>
+            </div>
+          </template></q-input
+        >
         <div class="flex justify-stretch">
           <q-input
             v-model="checkoutOptions.city"
             rounded
             outlined
             class="col q-mr-md"
-            label="City"
-            lazy-rules
-            :rules="[(val) => (val && val.length > 0) || 'Please type city']"
-          >
-            <template v-slot:append>
-              <span>City</span>
-            </template>
-          </q-input>
+            label=" City"
+          />
+
           <q-input
             type="number"
             v-model="checkoutOptions.postalCode"
             rounded
             outlined
             class="col"
-            label="Postal Code"
-            lazy-rules
-            :rules="[
-              (val) =>
-                (val && val !== null && val !== '' && val.length > 0) ||
-                'Please type postalCode',
-            ]"
-          >
-          </q-input>
+            label=" Postal Code"
+          />
         </div>
       </div>
-    </div>
-  </q-form>
+    </q-card-section>
+  </q-card>
 </template>
 
 <script>
@@ -143,59 +182,47 @@ export default defineComponent({
       postalCode: null,
     });
 
-    const handleSubmit = () => {
-      console.log("submited");
-      formRef.value.validate();
+    const isEmail = (emailAdress) => {
+      let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      return emailAdress.match(regex);
+    };
+
+    const isValidName = (name) => {
+      let regex = /^[a-z ,.'-]+$/i;
+      return name.match(regex);
     };
 
     return {
       countryOpts,
       checkoutOptions,
       formRef,
-      handleSubmit,
+      isEmail,
+      isValidName,
     };
   },
 });
 </script>
 <style lang="scss" scoped>
-.q-form {
+.q-card {
   box-shadow: none;
-  border: none;
-
-  > div {
-    box-shadow: none;
-    border: none;
-    > span {
-      font-size: 24px;
-      color: #000034;
-    }
-    .q-input,
-    .q-select {
-      * {
-        border: none;
-        box-shadow: none;
-      }
-      max-height: 56px;
-      background-color: #ffffff;
-      color: #84849a;
-      font-size: 16px;
-      font-family: "Poppins";
-    }
-    > .q-checkbox {
-      font-family: "Poppins";
-      font-weight: 400;
-      font-size: 16px;
-      color: #4b4e68;
-    }
-    > div {
-      span {
-        font-family: "Poppins";
-        font-weight: 500;
-        font-size: 24px;
-        line-height: 34px;
-        color: #000034;
-      }
-    }
+  .q-card__section {
   }
+}
+.contact-info {
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: 24px;
+}
+
+.sign-up {
+  font-family: "Poppins";
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.shipping-adress-text {
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: 24px;
 }
 </style>
