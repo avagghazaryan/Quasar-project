@@ -23,7 +23,7 @@ export default defineComponent({
   props: {
     hideLastItems: { type: Boolean, required: false },
   },
-  setup({ hideLastItems }) {
+  setup() {
     const paymentNetworks = [
       {
         id: 0,
@@ -49,13 +49,13 @@ export default defineComponent({
         id: 4,
         name: "JCB",
         src: jcb,
-        hide: hideLastItems,
+        hide: props.hideLastItems,
       },
       {
         id: 5,
         name: "DinersClub",
         src: club,
-        hide: hideLastItems,
+        hide: props.hideLastItems,
       },
     ];
     return {
