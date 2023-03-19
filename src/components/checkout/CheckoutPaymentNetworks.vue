@@ -20,9 +20,7 @@ import jcb from "../../assets/jcb.svg";
 
 export default defineComponent({
   name: "CheckoutPaymentNetworks",
-  props: {
-    hideLastItems: { type: Boolean, required: false },
-  },
+
   setup() {
     const paymentNetworks = [
       {
@@ -49,13 +47,11 @@ export default defineComponent({
         id: 4,
         name: "JCB",
         src: jcb,
-        hide: props.hideLastItems,
       },
       {
         id: 5,
         name: "DinersClub",
         src: club,
-        hide: props.hideLastItems,
       },
     ];
     return {
